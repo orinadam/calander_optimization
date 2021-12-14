@@ -6,7 +6,7 @@ const ScheduleTable = props =>
     console.log(props)
     const rows = props.data.map((item, i) => {
         return (
-            <tr onClick={console.log(`check ${i}`)}>
+            <tr onClick={() => console.log(`check ${i}`)}>
                 <th>{item.candidate}</th>
                 <th>{item.day}</th>
                 <th>{item.hour}</th>
