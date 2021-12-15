@@ -1,14 +1,16 @@
 import {Table} from "react-bootstrap"
-import { useState } from "react"
-
-
-
+import { useContext } from "react"
+import { CandidateData } from "../../App"
 const ScheduleTable = props =>
 {
-    console.log(props)
+    const {candidate, setCandidate} = useContext(CandidateData)
+    const openCandidateModal = (item) => {
+        setCandidate(item)
+        props.openCandidate()
+    }
     const rows = props.data.map((item, i) => {
         return (
-            <tr onClick={props.openCandidate}>
+            <tr key={item.id} onClick={() => {openCandidateModal(item)}}>
                 <th>{item.candidate}</th>
                 <th>{item.day}</th>
                 <th>{item.hour}</th>
@@ -19,7 +21,7 @@ const ScheduleTable = props =>
     return (
     <Table striped bordered hover size="sm">
         <thead>
-        <tr>
+        <tr key={0}>
             <th>מועמדים</th>
             <th>יום</th>
             <th>שעה</th>

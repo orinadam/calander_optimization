@@ -37,7 +37,7 @@ const FormModal = (props) => {
             :בניית לו"ז
           </Modal.Title>
         </Modal.Header>
-        {props.showError && <Alert variant={'danger'}>הפעולה נכשלה</Alert>}
+        {(props.showerror === true) ? <Alert variant={'danger'}>הפעולה נכשלה</Alert> : undefined}
         <Modal.Body>
             <Form noValidate validated={validated} onSubmit={handleSubmit}>
                 <Form.Group controlId="formFile" className="mb-3">

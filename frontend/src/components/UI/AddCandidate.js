@@ -1,0 +1,56 @@
+import { Button, Modal, Form, Alert} from "react-bootstrap";
+import {useState} from 'react'
+
+const EditCandidate = (props) => {
+    const [validated, setValidated] = useState(false);
+
+    const handleSubmit = (event) => {
+        const form = event.currentTarget;
+        if (form.checkValidity() === false) {
+          event.preventDefault();
+          event.stopPropagation();
+        }
+    
+        setValidated(true);
+      };
+  return (
+    <div>
+      <Modal 
+        {...props}
+        size="lg"
+        aria-labelledby="contained-modal-title-vcenter "
+        centered
+      >
+        <Modal.Header closeButton>
+          <Modal.Title id="contained-modal-title-vcenter">
+            :בניית לו"ז
+          </Modal.Title>
+        </Modal.Header>
+        {props.showerror && <Alert variant={'danger'}>הפעולה נכשלה</Alert>}
+        <Modal.Body>
+        <Form>
+        <Form.Select aria-label="Default select example">
+        <Form.Text>Text</Form.Text>
+        <option>Open this select menu</option>
+        <option value="1">One</option>
+        <option value="2">Two</option>
+        <option value="3">Three</option>
+        </Form.Select>
+        <br />
+        <div>
+            <Button variant="success" type="submit">עדכן</Button>{' '}
+            <Button variant="danger" type="submit">מחק</Button>
+        </div>
+        </Form>       
+        </Modal.Body>
+        <Modal.Footer>
+          <Button onClick={props.onHide}>סגירה</Button>
+        </Modal.Footer>
+      </Modal>
+    </div>
+
+   
+  );
+};
+
+export default EditCandidate;

@@ -3,31 +3,45 @@ import UploadFilesModal from "./components/UI/UploadFilesModal"
 import {useState} from 'react'
 import ScheduleTable from "./components/UI/Table"
 import EditCandidate from "./components/UI/EditCandidate"
-import {useMemo, createContext} from "react"
+import {useMemo, createContext, useEffect} from "react"
+import {Card, Button} from "react-bootstrap"
 
-export const TableData = createContext({
-  data: true,
-  setData: () => {}
+import exportFromJSON from 'export-from-json'  
+const fileName = 'download'  
+const exportType = 'xls'
+
+  //until we will connect the front with the back
+  const staticData = [
+    {"candidate" :"מועמד1", "day": "ראשון", "hour": "13:00", "psychologist": "פסיכולוג2" , "id" : 1},
+    {"candidate" :"מועמד2", "day": "שני"  , "hour": "14:00", "psychologist": "פסיכולוג3" , "id" : 2},
+    {"candidate" :"מועמד3", "day": "ראשון", "hour": "13:00", "psychologist": "פסיכולוג1" , "id" : 3},
+    {"candidate" :"מועמד4", "day": "שלישי", "hour": "12:00", "psychologist": "פסיכולוג2" , "id" : 4},
+    {"candidate" :"מועמד5", "day": "חמישי", "hour": "15:00", "psychologist": "פסיכולוג3" , "id" : 5},
+    {"candidate" :"מועמד6", "day": "ראשון", "hour": "13:00", "psychologist": "פסיכולוג1" , "id" : 6}
+  ]
+
+export const CandidateData = createContext({
+  candidate: {},
+  setCandidate: () => {}
 });
 
 
-//until we will connect the front with the back
-const staticData = [
-  {"candidate" :"מועמד1", "day": "ראשון", "hour": "13:00", "psychologist": "פסיכולוג2"},
-  {"candidate" :"מועמד2", "day": "שני"  , "hour": "14:00", "psychologist": "פסיכולוג3"},
-  {"candidate" :"מועמד3", "day": "ראשון", "hour": "13:00", "psychologist": "פסיכולוג1"},
-  {"candidate" :"מועמד4", "day": "שלישי", "hour": "12:00", "psychologist": "פסיכולוג2"},
-  {"candidate" :"מועמד5", "day": "חמישי", "hour": "15:00", "psychologist": "פסיכולוג3"},
-  {"candidate" :"מועמד6", "day": "ראשון", "hour": "13:00", "psychologist": "פסיכולוג1"}
-]
 
 function App() {
   //Upload Files
   const [formModal, setFormModal] = useState(false)
   const [errorModal, setErrorModal] = useState(false)
 
+
+
+
+
   //Schedule
-  const [data, setData] = useState(staticData)
+  const [data, setData] = useState([])
+  useEffect(() => {
+    setData(staticData)
+  }, []);
+
 
 
   //Edit Candidate Modal
@@ -35,22 +49,43 @@ function App() {
   const [errorCandidateModal, setErrorCandidateModal] = useState(false)  
   const [candidate, setCandidate] = useState({})
 
+  //modal for adding a candidate to the schedule
+  //const [addCandidateModal, setAddCandidateModal] = useState(false)
+  //const [errorAddCandidateModal, setErrorAddCandidateModal] = useState(false)
+
+
   const closeModal = (errFunc, formFunc) =>
   {
     errFunc(false)
     formFunc(false)
   }
-  const value = useMemo(() => ({ data, setData }), [data]);
+
+  const exportToExcel = () => {  
+    exportFromJSON({ data, fileName, exportType })  
+  } 
+  const deleteTable = () => {
+    setData([])
+  }
+  const value = useMemo(() => ({ candidate, setCandidate }), [candidate]);
   return (
-    <TableData.Provider value={value}>
-      {/*header*/}
-      <Navbar  onClickForm={() => {setFormModal(true)}}/>
-      {/*modals*/}
-      {formModal && <UploadFilesModal  changeError={setErrorModal} showError={errorModal} show={formModal} onHide={() => {closeModal(setErrorModal,setFormModal)}} />}
-      {candidateModal && <EditCandidate  changeError={setErrorCandidateModal} showError={errorCandidateModal} show={candidateModal} onHide={() => {closeModal(setErrorModal,setCandidateModal)}} />}
-       {/*body*/}
-      <ScheduleTable openCandidate={()=> {setCandidateModal(true)}}  data={data} editData={setData}/>
-      </TableData.Provider>
+      <CandidateData.Provider value={value}>
+        {/*header*/}
+        <Navbar  onClickForm={() => {setFormModal(true)}}/>
+        {/*modals*/}
+        {formModal && <UploadFilesModal  changerrror={setErrorModal ? 1 : 0} showerror={errorModal} show={formModal} onHide={() => {closeModal(setErrorModal,setFormModal)}} />}
+        {candidateModal && <EditCandidate data={data} editdata={setData} changeerror={() => {setErrorCandidateModal()}} showerror={errorCandidateModal ? 1 : 0} show={candidateModal} onHide={() => {closeModal(setErrorModal,setCandidateModal)}} />}
+        {/*body*/}
+        <br />
+        <Card body>
+        <Button onClick={exportToExcel} variant="outline-primary">הורדת טבלה</Button>{' '}
+        <Button onClick={deleteTable} variant="outline-danger">מחיקת טבלה</Button>{' '}
+        <Button onClick={() => {console.log("A")}} variant="outline-success">הוספת מועמד</Button>{' '}
+        <Button onClick={() => {console.log("upload file")}} variant="outline-secondary">העלאת טבלה</Button>{' '}
+
+        </Card>
+        <br />
+        {(data.length !== 0) && <ScheduleTable openCandidate={()=> {setCandidateModal(true)}}  data={data} editdata={() =>{setData()}}/>}
+        </CandidateData.Provider>
   );
 }
 

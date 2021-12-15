@@ -1,29 +1,47 @@
 import { Button, Modal, Form, Alert} from "react-bootstrap";
-import {useState} from 'react'
-import axios from 'axios'
+import {useState, useContext} from 'react'
+import { CandidateData } from "../../App";
+
+const StaticData = [
+    {"day": "שני", "hour": "11:00", "psychologist": "פסיכולוג4"},
+    {"day": "ראשון", "hour": "18:00", "psychologist": "פסיכולוג1"},
+    {"day": "שישי", "hour": "08:00", "psychologist": "פסיכולוג3"},
+]
 
 const EditCandidate = (props) => {
-    const [validated, setValidated] = useState(false);
 
-    const handleSubmit = (event) => {
-        const form = event.currentTarget;
-        if (form.checkValidity() === false) {
-          event.preventDefault();
-          event.stopPropagation();
-        }
-    
-        setValidated(true);
+    const {candidate, setCandidate} = useContext(CandidateData)
+    const current = {"day" : candidate.day, "hour" : candidate.hour, "psychologist" : candidate.psychologist}
+    const [selected, setSelected] = useState(`${current.psychologist}-${current.day}-${current.hour}`)
+
+    const [options, setOptions] = useState(StaticData)
+
+    const showOptions = options.map(option => {
+       return  <option value={`${option.psychologist}-${option.day}-${option.hour}`}>{`${option.psychologist} - ${option.day} - ${option.hour}`}</option>
+
+    })
+    const handleSubmitUpdate = (event) => {
+        event.preventDefault();
+        var foundIndex = props.data.findIndex(item => item.id === candidate.id);
+        const newData = props.data
+        const arr = selected.split('-')
+        newData[foundIndex].psychologist = arr[0]
+        newData[foundIndex].day = arr[1]
+        newData[foundIndex].hour = arr[2]
+        props.editdata(newData)
+        props.onHide()
+        
+
+
       };
-    const formLabels = ["מועמדים", "פסיכולוגים", "זמני פסיכולוגים", "התניות", "התניות על מועמדים","זמני מועמדים"]
-    const createFormFiles = formLabels.map(label =>
-        {
-            return(
-            <>
-                <Form.Label>{`:${label}`}</Form.Label>
-                <Form.Control required type="file" />
-            </>
-    )})
-
+    const handleDelete = (item) =>
+    {
+        const newData = props.data.filter(obj => {
+            return obj.id !== item.id
+        })
+        props.editdata(newData)
+        props.onHide()
+    }
   return (
     <div>
       <Modal 
@@ -37,20 +55,19 @@ const EditCandidate = (props) => {
             :בניית לו"ז
           </Modal.Title>
         </Modal.Header>
-        {props.showError && <Alert variant={'danger'}>הפעולה נכשלה</Alert>}
+        {(props.showerror === 1) && <Alert variant={'danger'}>הפעולה נכשלה</Alert>}
         <Modal.Body>
-        <Form>
-        <Form.Select aria-label="Default select example">
+        <Form onSubmit={handleSubmitUpdate}>
+        <Form.Select onChange={(e) => setSelected(e.target.value)}aria-label="Default select example">
         <Form.Text>Text</Form.Text>
-        <option>Open this select menu</option>
-        <option value="1">One</option>
-        <option value="2">Two</option>
-        <option value="3">Three</option>
+        {/*the current sitution*/}
+        <option value={`${current.psychologist}-${current.day}-${current.hour}`}>{`${current.psychologist} - ${current.day} - ${current.hour}`}</option>
+        {showOptions}
         </Form.Select>
         <br />
         <div>
             <Button variant="success" type="submit">עדכן</Button>{' '}
-            <Button variant="danger" type="submit">מחק</Button>
+            <Button onClick={() => {handleDelete(candidate)}} variant="danger" type="submit">מחק</Button>
         </div>
         </Form>       
         </Modal.Body>
