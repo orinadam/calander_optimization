@@ -3,6 +3,14 @@ import UploadFilesModal from "./components/UI/UploadFilesModal"
 import {useState} from 'react'
 import ScheduleTable from "./components/UI/Table"
 import EditCandidate from "./components/UI/EditCandidate"
+import {useMemo, createContext} from "react"
+
+export const TableData = createContext({
+  data: true,
+  setData: () => {}
+});
+
+
 //until we will connect the front with the back
 const staticData = [
   {"candidate" :"מועמד1", "day": "ראשון", "hour": "13:00", "psychologist": "פסיכולוג2"},
@@ -32,8 +40,9 @@ function App() {
     errFunc(false)
     formFunc(false)
   }
+  const value = useMemo(() => ({ data, setData }), [data]);
   return (
-    <div>
+    <TableData.Provider value={value}>
       {/*header*/}
       <Navbar  onClickForm={() => {setFormModal(true)}}/>
       {/*modals*/}
@@ -41,7 +50,7 @@ function App() {
       {candidateModal && <EditCandidate  changeError={setErrorCandidateModal} showError={errorCandidateModal} show={candidateModal} onHide={() => {closeModal(setErrorModal,setCandidateModal)}} />}
        {/*body*/}
       <ScheduleTable openCandidate={()=> {setCandidateModal(true)}}  data={data} editData={setData}/>
-    </div>
+      </TableData.Provider>
   );
 }
 
