@@ -1,12 +1,14 @@
 import {Table} from "react-bootstrap"
 import { useState } from "react"
 
+
+
 const ScheduleTable = props =>
 {
     console.log(props)
     const rows = props.data.map((item, i) => {
         return (
-            <tr onClick={() => console.log(`check ${i}`)}>
+            <tr onClick={props.openCandidate}>
                 <th>{item.candidate}</th>
                 <th>{item.day}</th>
                 <th>{item.hour}</th>

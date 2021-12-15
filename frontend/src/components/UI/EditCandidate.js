@@ -47,10 +47,11 @@ const EditCandidate = (props) => {
         <option value="2">Two</option>
         <option value="3">Three</option>
         </Form.Select>
-
-
-        <Button variant="primary" type="submit">עדכן</Button>
-        <Button variant="primary" type="submit">מחק</Button>
+        <br />
+        <div>
+            <Button variant="primary" type="submit">עדכן</Button>{' '}
+            <Button variant="primary" type="submit">מחק</Button>
+        </div>
         </Form>       
         </Modal.Body>
         <Modal.Footer>

@@ -23,8 +23,8 @@ function App() {
 
 
   //Edit Candidate Modal
-  const [candidateModal, setCandidateModal] = useState(true)
-  const [errorCandidateModal, setErrorCandidateModal] = useState(true)  
+  const [candidateModal, setCandidateModal] = useState(false)
+  const [errorCandidateModal, setErrorCandidateModal] = useState(false)  
   const [candidate, setCandidate] = useState({})
 
   const closeModal = (errFunc, formFunc) =>
@@ -40,7 +40,7 @@ function App() {
       {formModal && <UploadFilesModal  changeError={setErrorModal} showError={errorModal} show={formModal} onHide={() => {closeModal(setErrorModal,setFormModal)}} />}
       {candidateModal && <EditCandidate  changeError={setErrorCandidateModal} showError={errorCandidateModal} show={candidateModal} onHide={() => {closeModal(setErrorModal,setCandidateModal)}} />}
        {/*body*/}
-      <ScheduleTable data={data} editData={setData}/>
+      <ScheduleTable openCandidate={()=> {setCandidateModal(true)}}  data={data} editData={setData}/>
     </div>
   );
 }
