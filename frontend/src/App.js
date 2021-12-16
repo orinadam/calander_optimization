@@ -5,7 +5,7 @@ import ScheduleTable from "./components/UI/Table"
 import EditCandidate from "./components/UI/EditCandidate"
 import {useMemo, createContext, useEffect} from "react"
 import {Card, Button} from "react-bootstrap"
-
+import AddCandidate from "./components/UI/AddCandidate"
 import exportFromJSON from 'export-from-json'  
 const fileName = 'download'  
 const exportType = 'xls'
@@ -50,8 +50,8 @@ function App() {
   const [candidate, setCandidate] = useState({})
 
   //modal for adding a candidate to the schedule
-  //const [addCandidateModal, setAddCandidateModal] = useState(false)
-  //const [errorAddCandidateModal, setErrorAddCandidateModal] = useState(false)
+  const [addCandidateModal, setAddCandidateModal] = useState(false)
+  const [errorAddCandidateModal, setErrorAddCandidateModal] = useState(false)
 
 
   const closeModal = (errFunc, formFunc) =>
@@ -74,12 +74,14 @@ function App() {
         {/*modals*/}
         {formModal && <UploadFilesModal  changerrror={setErrorModal ? 1 : 0} showerror={errorModal} show={formModal} onHide={() => {closeModal(setErrorModal,setFormModal)}} />}
         {candidateModal && <EditCandidate data={data} editdata={setData} changeerror={() => {setErrorCandidateModal()}} showerror={errorCandidateModal ? 1 : 0} show={candidateModal} onHide={() => {closeModal(setErrorModal,setCandidateModal)}} />}
+        {addCandidateModal && <AddCandidate data={data} editdata={setData} changeerror={() => {setErrorAddCandidateModal()}} showerror={errorAddCandidateModal ? 1 : 0} show={addCandidateModal} onHide={() => {closeModal(setErrorAddCandidateModal,setAddCandidateModal)}} />}
+
         {/*body*/}
         <br />
         <Card body>
         <Button onClick={exportToExcel} variant="outline-primary">הורדת טבלה</Button>{' '}
         <Button onClick={deleteTable} variant="outline-danger">מחיקת טבלה</Button>{' '}
-        <Button onClick={() => {console.log("A")}} variant="outline-success">הוספת מועמד</Button>{' '}
+        <Button onClick={() => {setAddCandidateModal(true)}} variant="outline-success">הוספת מועמד</Button>{' '}
         <Button onClick={() => {console.log("upload file")}} variant="outline-secondary">העלאת טבלה</Button>{' '}
 
         </Card>
