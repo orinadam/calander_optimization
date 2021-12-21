@@ -7,7 +7,19 @@
   pointer-events: none;
 }
 
-
+.white-content {
+  background: #05dd05;
+}
+/*html,
+body,
+table,
+div.card-body,
+tbody,
+th,
+tr {
+  background: #000000 !important;
+  color: rgb(255, 255, 255);
+}*/
 
 .App-header {
   background-color: #282c34;
@@ -23,4 +35,3 @@
 .App-link {
   color: #61dafb;
 }
-

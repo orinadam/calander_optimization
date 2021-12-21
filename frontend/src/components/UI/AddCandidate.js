@@ -1,6 +1,6 @@
 import { Button, Modal, Form, Alert } from "react-bootstrap";
 import { useState, useEffect } from "react";
-
+import "./modify.css";
 const staticData = [
   {
     ranks: ["1", "2"],
@@ -42,14 +42,14 @@ const staticData = [
     day: "שני",
     hour: "07:00",
     psychologist: "פסיכולוג4",
-    id: 14,
+    id: 15,
   },
   {
     ranks: ["1", "2"],
     day: "ראשון",
     hour: "10:00",
     psychologist: "פסיכולוג3",
-    id: 15,
+    id: 16,
   },
 ];
 
@@ -108,6 +108,7 @@ const AddCandidate = (props) => {
     const options = staticData.filter((item) => {
       return true === item.ranks.includes(val);
     });
+    setSelectedOption(options[0].id);
     const showOptions = options.map((option) => {
       return (
         <option
@@ -118,8 +119,9 @@ const AddCandidate = (props) => {
     setShowRows(showOptions);
   };
   return (
-    <div>
+    <div className="btn-close">
       <Modal
+        rtl={true}
         {...props}
         size="lg"
         aria-labelledby="contained-modal-title-vcenter "
@@ -127,7 +129,7 @@ const AddCandidate = (props) => {
       >
         <Modal.Header closeButton>
           <Modal.Title id="contained-modal-title-vcenter">
-            :הוספת מועמד
+            הוספת מועמד:
           </Modal.Title>
         </Modal.Header>
         {props.showerror !== 0 && (
