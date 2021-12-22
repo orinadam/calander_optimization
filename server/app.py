@@ -2,7 +2,7 @@ import os
 import sys
 import logging
 import base64 
-
+from load_files import loadFiles 
 from flask import Flask, flash, request, redirect, url_for
 from werkzeug.utils import secure_filename
 from flask_session import Session
@@ -50,18 +50,12 @@ def upload_file():
             if file:
                 filename = secure_filename(file.filename)
                 file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-    return "good"
-    
-        
-
-
-
     # connect to the database
-
+    value = loadFiles()
+    #str1 = ''.join(str(e) for e in value)
     # use the algorithm to send the schedule
-
     #return schedule
-    return "check1"
+    return {"data" : value}
 
 
 if __name__ == "__main__":

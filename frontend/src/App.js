@@ -71,7 +71,7 @@ function App() {
   //Schedule
   const [data, setData] = useState([]);
   useEffect(() => {
-    setData(staticData);
+    setData([]);
   }, []);
 
   //Edit Candidate Modal
@@ -109,6 +109,8 @@ function App() {
           <UploadFilesModal
             changerrror={setErrorModal ? 1 : 0}
             showerror={errorModal}
+            data={data}
+            editdata={setData}
             show={formModal}
             onHide={() => {
               closeModal(setErrorModal, setFormModal);

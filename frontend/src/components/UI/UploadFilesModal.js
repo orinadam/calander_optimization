@@ -19,34 +19,51 @@ const FormModal = (props) => {
   const handleSubmit = async (event) => {
     const form = event.currentTarget;
     event.preventDefault();
-    // if (form.checkValidity() === false) {
-    //   event.preventDefault();
-    //   event.stopPropagation();
-    //    setValidated(true);
-    //  } else {
-    // }
-    //setIsloading(true);
-    var filenames = [
-      "candidates",
-      "psychologists",
-      "working_hours",
-      "conditions",
-      "candidates_conditions",
-      "candidates_available_hours",
-    ];
-    let final_files = files;
-    const data = new FormData();
-    for (var i = 0; i < filenames.length; i++) {
-      data.append(filenames[i], final_files[i]);
+    if (form.checkValidity() === false) {
+      event.preventDefault();
+      event.stopPropagation();
+      setValidated(true);
+    } else {
+      setIsloading(true);
+      var filenames = [
+        "candidates",
+        "psychologists",
+        "working_hours",
+        "conditions",
+        "candidates_conditions",
+        "candidates_available_hours",
+      ];
+      let final_files = files;
+      const data = new FormData();
+      for (var i = 0; i < filenames.length; i++) {
+        data.append(filenames[i], final_files[i]);
+      }
+      fetch("http://127.0.0.1:5000/", {
+        method: "POST",
+        body: data,
+      })
+        .then(async (res) => {
+          let data = await res.json();
+          data = data["data"].filter((item, i) => {
+            return i !== 0;
+          });
+          const final = data.map((item, i) => {
+            let ret = {
+              candidate: item[0],
+              day: "ראשון",
+              hour: item[1],
+              psychologist: item[2],
+              id: i,
+            };
+            return ret;
+          });
+          props.editdata(final);
+          console.log(final);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     }
-    fetch("http://127.0.0.1:5000/", {
-      method: "POST",
-      body: data,
-    }).then((response) => {
-      response.json().then((body) => {
-        this.setState({ imageURL: `http://localhost:8000/${body.file}` });
-      });
-    });
   };
 
   const formLabels = [
