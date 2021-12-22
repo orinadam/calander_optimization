@@ -3,20 +3,52 @@ import { useState } from "react";
 import axios from "axios";
 import { SpinnerInfinity } from "spinners-react";
 
+let ret = "";
+
 const FormModal = (props) => {
   const [validated, setValidated] = useState(false);
   const [isLoading, setIsloading] = useState(false);
+  const [files, setFiles] = useState([]);
 
-  const handleSubmit = (event) => {
-    const form = event.currentTarget;
-    if (form.checkValidity() === false) {
-      event.preventDefault();
-      event.stopPropagation();
-      setValidated(true);
-    } else {
-      setIsloading(true);
-    }
+  const handleChangeFile = async (e) => {
+    const file = e.target.files[0];
+    let data = files;
+    data.push(file);
+    setFiles(data);
   };
+  const handleSubmit = async (event) => {
+    const form = event.currentTarget;
+    event.preventDefault();
+    // if (form.checkValidity() === false) {
+    //   event.preventDefault();
+    //   event.stopPropagation();
+    //    setValidated(true);
+    //  } else {
+    // }
+    //setIsloading(true);
+    var filenames = [
+      "candidates",
+      "psychologists",
+      "working_hours",
+      "conditions",
+      "candidates_conditions",
+      "candidates_available_hours",
+    ];
+    let final_files = files;
+    const data = new FormData();
+    for (var i = 0; i < filenames.length; i++) {
+      data.append(filenames[i], final_files[i]);
+    }
+    fetch("http://127.0.0.1:5000/", {
+      method: "POST",
+      body: data,
+    }).then((response) => {
+      response.json().then((body) => {
+        this.setState({ imageURL: `http://localhost:8000/${body.file}` });
+      });
+    });
+  };
+
   const formLabels = [
     "מועמדים",
     "פסיכולוגים",
@@ -25,11 +57,18 @@ const FormModal = (props) => {
     "התניות על מועמדים",
     "זמני מועמדים",
   ];
+
   const createFormFiles = formLabels.map((label) => {
     return (
       <>
         <Form.Label>{`${label}:`}</Form.Label>
-        <Form.Control required type="file" />
+        <Form.Control
+          onChange={(e) => {
+            handleChangeFile(e);
+          }}
+          required
+          type="file"
+        />
       </>
     );
   });
