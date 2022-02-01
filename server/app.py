@@ -22,9 +22,19 @@ app.config['CORS_HEADERS'] = 'Content-Type:multipart/form-data'
 
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
-def allowed_file(filename):
-    return '.' in filename and \
-           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+@app.route('/check', methods=['POST', "GET"])
+def send():
+    value = [["candidate", "day", "ss", "psychologist", "id", "tt"],
+            ["Maor", "Sunday", "12:00", "Guy", 1],
+            ["Maor", "Sunday", "12:00", "Guy", 2],
+            ["Maor", "Sunday", "12:00", "Guy", 3],
+            ["Maor", "Sunday", "12:00", "Yoval", 3],    
+    
+    ]
+    #str1 = ''.join(str(e) for e in value)
+    # use the algorithm to send the schedule
+    #return schedule
+    return {"data" : value}
 
 @app.route('/', methods=['POST', "GET"])
 def upload_file():
@@ -51,7 +61,15 @@ def upload_file():
                 filename = secure_filename(file.filename)
                 file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
     # connect to the database
-    value = loadFiles()
+    #value = loadFiles()
+    value = [["candidate", "day", "hour", "psychologist", "id"],
+            ["Maor", "Sunday", "12:00", "Guy", 1],
+            ["Maor", "Sunday", "12:00", "Guy", 2],
+            ["Maor", "Sunday", "12:00", "Guy", 3],
+
+    
+    
+    ]
     #str1 = ''.join(str(e) for e in value)
     # use the algorithm to send the schedule
     #return schedule

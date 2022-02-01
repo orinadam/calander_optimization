@@ -8,6 +8,7 @@ import { Card, Button } from "react-bootstrap";
 import AddCandidate from "./components/UI/AddCandidate";
 import exportFromJSON from "export-from-json";
 import "./App.css";
+import axios from "axios";
 
 const fileName = "download";
 const exportType = "xls";
@@ -68,10 +69,29 @@ function App() {
   const [formModal, setFormModal] = useState(false);
   const [errorModal, setErrorModal] = useState(false);
 
+  const [headers, setHeaders] = useState([]);
   //Schedule
   const [data, setData] = useState([]);
   useEffect(() => {
-    setData([]);
+    axios
+      .get("http://127.0.0.1:5000/check")
+      .then((res) => {
+        var headers = res["data"].data.slice(0, 1)[0];
+        var data = res["data"].data.slice(1, res["data"].data.length);
+        var obj = [];
+        for (var i = 0; i < data.length; i++) {
+          var temp = {};
+          for (var j = 0; j < data[i].length; j++) {
+            temp[headers[j]] = data[i][j];
+          }
+          obj.push(temp);
+        }
+        setData(obj);
+        setHeaders(headers);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }, []);
 
   //Edit Candidate Modal
@@ -179,6 +199,7 @@ function App() {
               setCandidateModal(true);
             }}
             data={data}
+            headers={headers}
             editdata={() => {
               setData();
             }}

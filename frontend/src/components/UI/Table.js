@@ -7,7 +7,14 @@ const ScheduleTable = (props) => {
     setCandidate(item);
     props.openCandidate();
   };
+  const header_table = props.headers.map((item) => {
+    return <th>{item}</th>;
+  });
   const rows = props.data.map((item, i) => {
+    var items = [];
+    for (var i = 0; i < props.headers.length; i++) {
+      items.push(<th>{item[props.headers[i]]}</th>);
+    }
     return (
       <tr
         key={item.id}
@@ -15,22 +22,14 @@ const ScheduleTable = (props) => {
           openCandidateModal(item);
         }}
       >
-        <th>{item.candidate}</th>
-        <th>{item.day}</th>
-        <th>{item.hour}</th>
-        <th>{item.psychologist}</th>
+        {items}
       </tr>
     );
   });
   return (
     <Table rtl={true} striped bordered hover size="sm">
       <thead>
-        <tr key={0}>
-          <th>מועמדים</th>
-          <th>יום</th>
-          <th>שעה</th>
-          <th>פסיכולוג</th>
-        </tr>
+        <tr key={0}>{header_table}</tr>
       </thead>
       <tbody>{rows}</tbody>
     </Table>
