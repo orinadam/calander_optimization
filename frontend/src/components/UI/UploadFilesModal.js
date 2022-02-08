@@ -9,7 +9,7 @@ const FormModal = (props) => {
   const [validated, setValidated] = useState(false);
   const [isLoading, setIsloading] = useState(false);
   const [files, setFiles] = useState([]);
-
+  const [errorContent, setErrorContent] = useState("")
   const handleChangeFile = async (e) => {
     const file = e.target.files[0];
     let data = files;
@@ -24,7 +24,7 @@ const FormModal = (props) => {
       event.stopPropagation();
       setValidated(true);
     } else {
-      setIsloading(true);
+      setIsloading(false);
       var filenames = [
         "candidates",
         "psychologists",
@@ -44,25 +44,33 @@ const FormModal = (props) => {
       })
         .then(async (res) => {
           let data = await res.json();
-          data = data["data"].filter((item, i) => {
-            return i !== 0;
+          if(data["error"] !== "")
+          {
+            setErrorContent(data["error"])
+            props.changerrror(true)
+          }
+          else
+          {
+            let data = await res.json();
+            var headers = data["data"].slice(0, 1)[0]
+            data = data["data"].slice(1, data["data"].length)
+
+            var obj = [];
+            for (var i = 0; i < data.length; i++) {
+              var temp = {};
+              for (var j = 0; j < data[i].length; j++) {
+                temp[headers[j]] = data[i][j];
+              }
+              console.log(temp)
+              obj.push(temp);
+            }
+            props.editdata(obj);
+            props.editheaders(headers);
+          }
+          })
+          .catch((err) => {
+            console.log(err);
           });
-          const final = data.map((item, i) => {
-            let ret = {
-              candidate: item[0],
-              day: "ראשון",
-              hour: item[1],
-              psychologist: item[2],
-              id: i,
-            };
-            return ret;
-          });
-          props.editdata(final);
-          console.log(final);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
     }
   };
 
@@ -105,7 +113,7 @@ const FormModal = (props) => {
           </Modal.Title>
         </Modal.Header>
         {props.showerror === true ? (
-          <Alert variant={"danger"}>הפעולה נכשלה</Alert>
+          <Alert variant={"danger"}>{errorContent}</Alert>
         ) : undefined}
         <Modal.Body>
           <Form noValidate validated={validated} onSubmit={handleSubmit}>

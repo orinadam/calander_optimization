@@ -9,6 +9,8 @@ import AddCandidate from "./components/UI/AddCandidate";
 import exportFromJSON from "export-from-json";
 import "./App.css";
 import axios from "axios";
+const reader = require('xlsx')
+
 
 const fileName = "download";
 const exportType = "xls";
@@ -127,10 +129,12 @@ function App() {
         {/*modals*/}
         {formModal && (
           <UploadFilesModal
-            changerrror={setErrorModal ? 1 : 0}
+            changerrror={setErrorModal}
             showerror={errorModal}
             data={data}
             editdata={setData}
+            headers={headers}
+            editheaders={setHeaders}
             show={formModal}
             onHide={() => {
               closeModal(setErrorModal, setFormModal);
