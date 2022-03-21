@@ -8,13 +8,15 @@ def luz_authority(schedule, authority):
     :param schedule: רשימה של פגישות
     :return: רשימה של פגישות של אותה סמכות
     """
-    authority_list = [["סמכות"], ["שם פסיכולוג", "יום", "שעה", "שם מועמד"], []]
+    #authority_list = [["סמכות"], ["שם פסיכולוג", "יום", "שעה", "שם מועמד"], []]
+    authority_list = [["שם פסיכולוג", "יום", "שעה", "שם מועמד"]]
+
     for meeting in schedule:  # every meeting is [name_psycho, day, time, name_candidate]
-        if meeting[3].authority == authority:
-            meeting[2] = ms.time_float_to_string(meeting)
+        if meeting[5] == authority:
+            #meeting[2] = ms.time_float_to_string(meeting)
             authority_list.append(meeting)
 
-    return json.dumps(authority_list)
+    return authority_list
 
 
 def candidates_available_for_exchange(personal_number, schedule):
@@ -46,7 +48,7 @@ def candidates_available_for_exchange(personal_number, schedule):
 
 
 def same_psychologist(name_psycho, schedule):
-    """ הפונקציה מקבלת שם פסיכולוג (קלט משתמש) ומערכת פגישות כללית
+    """ הפונקציה מקבלת שם פסיכולוג (קלט משתמש)      פגישות כללית
     ומחזירה את המערכת של אותו הפסיכולוג
     :param name_psycho: שם פסיכולוג
     :param schedule: לוז כללי
@@ -58,3 +60,17 @@ def same_psychologist(name_psycho, schedule):
         if name_psycho == meeting[0]:  # TODO: לבדוק איך השם של הפסיכולוג מופיע בכל פגישה
             schedule_psychologist.append(meeting)
     return schedule_psychologist
+
+
+def specific_candidate(first_name_candidate, family_name_candidate , schedule):
+    """הפונקציה מקבלת שם פרטי + משפחה, רשימת פגישות ומחזירה
+    את הפגישה המתאימה
+    :param first_name_candidate: שם פרטי שמתקבל כקלט
+    :param family_name_candidate: שם משפחה שמתקבל כקלט
+    :param schedule: רשימת הפגישות
+    :return: הפגישה המתאימה
+    """
+    for meeting in schedule:
+        if meeting[2] == first_name_candidate:
+            if meeting[3] == family_name_candidate:
+                return meeting

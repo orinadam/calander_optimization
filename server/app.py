@@ -23,13 +23,53 @@ app.config['CORS_HEADERS'] = 'Content-Type:multipart/form-data'
 
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
-@app.route('/check', methods=['POST', "GET"])
-def send():
+#specific_candidate(first_name_candidate, family_name_candidate , schedule):
+@app.route('/findspecific', methods=['POST', "GET"])
+def send_specific():
+    firstname = request.args.get('firstname')
+    secondname =  request.args.get('secondname')
+    res =  [["שם פסיכולוג", "שעת ראיון" , "שם פרטי", "שם משפחה", "מ.א", "הערות","טלפון", "דפר", "שנות לימוד","סימול עברית", "מייל"]]
+
+    print("#"*10)
+    print(firstname)
+    print(secondname)
+    print("#"*10)
     value = list(loadFiles())
     del value[0]
-    s = same_psychologist("פסיכולוג1שםפרטי", value)
+    s = specific_candidate(firstname, secondname, value)
+    isEmpty = "true" if s == None else "false"
+    res.append(s)
+    print("#"*10)
+
+    return {"data" : res, "error" : "", "isempty": isEmpty}
+
+
+@app.route('/check', methods=['POST', "GET"])
+def send():
+    search = request.args.get('data')
+    print(search)
+    value = list(loadFiles())
+    del value[0]
+    s = same_psychologist(search, value)
     print(s)
-    return {"data" : s}
+    return {"data" : s, "error" : ""}
+
+@app.route('/luz', methods=['POST', "GET"])
+def sned_authority():
+    authority = request.args.get('authority')
+    value = list(loadFiles())
+    del value[0]
+    s = luz_authority(value, authority)
+    isEmpty = "true" if s == None else "false"
+    print(s)
+    return {"data" : s, "error" : "", "isempty": isEmpty}
+
+@app.route('/getstart', methods=['POST', "GET"])
+def send_start():
+    value = list(loadFiles())
+    print(value)
+    return {"data" : value, "error" : ""}
+
 
 @app.route('/', methods=['POST', "GET"])
 def upload_file():

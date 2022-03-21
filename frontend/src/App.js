@@ -7,10 +7,14 @@ import { useMemo, createContext, useEffect } from "react";
 import { Card, Button } from "react-bootstrap";
 import AddCandidate from "./components/UI/AddCandidate";
 import exportFromJSON from "export-from-json";
+import SearchAuthrity from "./components/SearchAutority";
+import SpecificMeeting from "./components/SpecificMeetingPage";
+import LuzAuthPage from "./components/LuzAuth";
 import "./App.css";
 import axios from "axios";
 const reader = require('xlsx')
 
+const XLSX = require("xlsx")//npm install xlsx
 
 const fileName = "download";
 const exportType = "xls";
@@ -76,7 +80,7 @@ function App() {
   const [data, setData] = useState([]);
   useEffect(() => {
     axios
-      .get("http://127.0.0.1:5000/check")
+      .get("http://127.0.0.1:5000/getstart")
       .then((res) => {
         var headers = res["data"].data.slice(0, 1)[0];
         var data = res["data"].data.slice(1, res["data"].data.length);
@@ -111,8 +115,17 @@ function App() {
   };
 
   const exportToExcel = () => {
-    exportFromJSON({ data, fileName, exportType });
-  };
+    const workSheet = XLSX.utils.json_to_sheet(data);
+    const workBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workBook, workSheet, "Product Image Catalog");
+    
+    // Generate buffer
+    XLSX.write(workBook, {bookType: 'xlsx', type: 'buffer'})
+    
+    // Binary String
+    XLSX.write(workBook, {bookType: 'xlsx', type: 'binary'})
+    
+    XLSX.writeFile(workBook, 'image-catalog.xlsx')  };
   const deleteTable = () => {
     setData([]);
   };
@@ -197,6 +210,26 @@ function App() {
           </Button>{" "}
         </Card>
         <br />
+        <SearchAuthrity 
+            data={data}
+            editdata={setData}
+            headers={headers}
+            editheaders={setHeaders}
+        />
+        <SpecificMeeting 
+            data={data}
+            editdata={setData}
+            headers={headers}
+            editheaders={setHeaders}
+        
+        />
+        <LuzAuthPage 
+            data={data}
+            editdata={setData}
+            headers={headers}
+            editheaders={setHeaders}
+        
+        />
         {data.length !== 0 && (
           <ScheduleTable
             openCandidate={() => {

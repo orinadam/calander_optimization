@@ -32,6 +32,9 @@ const formButtons = () =>
     <button type="submit" onClick={(e) => {filterObjects(e)}}>סנן</button>
   </form>
 }
+const headersShow = props.headers.map((item) => {
+  return <th>{item}</th>
+})
 
   const openCandidateModal = (item) => {
     setCandidate(item);
@@ -52,9 +55,6 @@ const formButtons = () =>
     return (
       <tr
         key={item.id}
-        onClick={() => {
-          openCandidateModal(item);
-        }}
       >
         {items}
       </tr>
@@ -62,11 +62,10 @@ const formButtons = () =>
   });
   return (
     <div>
-      {formButtons()}
       {console.log(headerDisplay)}
     <Table rtl={true} striped bordered hover size="sm">
       <thead>
-        <tr key={0}>{headerDisplay}</tr>
+        <tr key={0}>{headersShow}</tr>
       </thead>
       <tbody>{rows}</tbody>
     </Table>
