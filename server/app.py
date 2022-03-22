@@ -44,6 +44,19 @@ def send_specific():
     return {"data" : res, "error" : "", "isempty": isEmpty}
 
 
+
+#def candidates_available_for_exchange(personal_number, schedule):
+@app.route('/replacement', methods=['POST', "GET"])
+def find_replacement():
+    personal_number =  request.args.get('personnumber')
+    value = list(loadFiles())
+    del value[0]
+    s = []#candidates_available_for_exchange(personal_number, value)
+    print(len(s))
+    isEmpty = "true" if len(s) < 1 else "false" #TODO: check this starnage one  liner fumcionality 
+
+    return {"data" : s, "error" : "", "isempty": isEmpty}
+
 @app.route('/check', methods=['POST', "GET"])
 def send():
     search = request.args.get('data')

@@ -10,16 +10,22 @@ import exportFromJSON from "export-from-json";
 import SearchAuthrity from "./components/SearchAutority";
 import SpecificMeeting from "./components/SpecificMeetingPage";
 import LuzAuthPage from "./components/LuzAuth";
+import FindReplacementPage from "./components/FindReplacement";
+import FiltersModal from "./components/UI/FiltersModal";
 import "./App.css";
 import axios from "axios";
-const reader = require('xlsx')
+const reader = require("xlsx");
 
-const XLSX = require("xlsx")//npm install xlsx
+const XLSX = require("xlsx"); //npm install xlsx
 
 const fileName = "download";
 const exportType = "xls";
 
 //until we will connect the front with the back
+
+/*
+
+*/
 const staticData = [
   {
     candidate: "מועמד1",
@@ -104,6 +110,7 @@ function App() {
   const [candidateModal, setCandidateModal] = useState(false);
   const [errorCandidateModal, setErrorCandidateModal] = useState(false);
   const [candidate, setCandidate] = useState({});
+  const [filterModal, setFilterModal] = useState(false);
 
   //modal for adding a candidate to the schedule
   const [addCandidateModal, setAddCandidateModal] = useState(false);
@@ -113,19 +120,52 @@ function App() {
     errFunc(false);
     formFunc(false);
   };
-
+  const handleClean = (event) => {
+    event.preventDefault();
+    axios
+      .get("http://127.0.0.1:5000/getstart")
+      .then((res) => {
+        var headers = res["data"].data.slice(0, 1)[0];
+        var data = res["data"].data.slice(1, res["data"].data.length);
+        var obj = [];
+        for (var i = 0; i < data.length; i++) {
+          var temp = {};
+          for (var j = 0; j < data[i].length; j++) {
+            temp[headers[j]] = data[i][j];
+          }
+          obj.push(temp);
+        }
+        setData(obj);
+        setHeaders(headers);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
   const exportToExcel = () => {
-    const workSheet = XLSX.utils.json_to_sheet(data);
+    console.log();
+    var json = [];
+    for (var item in data) {
+      var itemJson = {};
+      for (var field = Object.keys(data[0]).length - 1; field >= 0; field--) {
+        itemJson[Object.keys(data[0])[field]] =
+          data[item][Object.keys(data[0])[field]];
+      }
+      console.log(itemJson);
+      json.push(itemJson);
+    }
+    const workSheet = XLSX.utils.json_to_sheet(json);
     const workBook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workBook, workSheet, "Product Image Catalog");
-    
+    XLSX.utils.book_append_sheet(workBook, workSheet, "מערכת שבועית");
+
     // Generate buffer
-    XLSX.write(workBook, {bookType: 'xlsx', type: 'buffer'})
-    
+    XLSX.write(workBook, { bookType: "xlsx", type: "buffer" });
+
     // Binary String
-    XLSX.write(workBook, {bookType: 'xlsx', type: 'binary'})
-    
-    XLSX.writeFile(workBook, 'image-catalog.xlsx')  };
+    XLSX.write(workBook, { bookType: "xlsx", type: "binary" });
+
+    XLSX.writeFile(workBook, "לוז פסיכולוגים.xlsx");
+  };
   const deleteTable = () => {
     setData([]);
   };
@@ -151,6 +191,20 @@ function App() {
             show={formModal}
             onHide={() => {
               closeModal(setErrorModal, setFormModal);
+            }}
+          />
+        )}
+        {filterModal && (
+          <FiltersModal
+            changerrror={setErrorModal}
+            showerror={errorModal}
+            data={data}
+            editdata={setData}
+            headers={headers}
+            editheaders={setHeaders}
+            show={filterModal}
+            onHide={() => {
+              closeModal(setErrorModal, setFilterModal);
             }}
           />
         )}
@@ -189,9 +243,6 @@ function App() {
           <Button onClick={exportToExcel} variant="outline-primary">
             הורדת טבלה
           </Button>{" "}
-          <Button onClick={deleteTable} variant="outline-danger">
-            מחיקת טבלה
-          </Button>{" "}
           <Button
             onClick={() => {
               setAddCandidateModal(true);
@@ -202,34 +253,22 @@ function App() {
           </Button>{" "}
           <Button
             onClick={() => {
-              console.log("upload file");
+              setFilterModal(true);
+            }}
+            variant="outline-danger"
+          >
+            פילטרים
+          </Button>{" "}
+          <Button
+            onClick={(e) => {
+              handleClean(e);
             }}
             variant="outline-secondary"
           >
-            העלאת טבלה
+            נקה פילטרים
           </Button>{" "}
         </Card>
         <br />
-        <SearchAuthrity 
-            data={data}
-            editdata={setData}
-            headers={headers}
-            editheaders={setHeaders}
-        />
-        <SpecificMeeting 
-            data={data}
-            editdata={setData}
-            headers={headers}
-            editheaders={setHeaders}
-        
-        />
-        <LuzAuthPage 
-            data={data}
-            editdata={setData}
-            headers={headers}
-            editheaders={setHeaders}
-        
-        />
         {data.length !== 0 && (
           <ScheduleTable
             openCandidate={() => {

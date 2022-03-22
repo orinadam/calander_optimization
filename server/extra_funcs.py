@@ -30,21 +30,21 @@ def candidates_available_for_exchange(personal_number, schedule):
     candidates_available = [["שם פסיכולוג", "יום", "שעה", "שם מועמד"]]
 
     for meeting in schedule:
-        if meeting[3].personal_number == personal_number:
+        if meeting[4] == personal_number:
             cur_meeting = meeting
             break
-
+    print(cur_meeting)
     for meeting in schedule:
-        if meeting[3].required_level_for_interview <= cur_meeting[0].level:
-            for available_hour in meeting[3].available_hours[cur_meeting[1]]:
-                if int(cur_meeting[2]) == available_hour:
+        if meeting[5] <= cur_meeting[1][5]:
+            for available_hour in meeting[cur_meeting[1][1]]:
+                if int(cur_meeting[1][2]) == available_hour:
 
-                    if cur_meeting[3].required_level_for_interview <= meeting[0].level:
-                        for available_hour1 in cur_meeting[3].available_hours1[meeting[1]]:
-                            if int(cur_meeting[2]) == available_hour1:
+                    if cur_meeting[5] <= meeting[5]:
+                        for available_hour1 in cur_meeting[meeting[1][1]]:
+                            if int(cur_meeting[1]) == available_hour1:
                                 candidates_available.append(meeting)
 
-    return json.dumps(candidates_available)
+    return candidates_available
 
 
 def same_psychologist(name_psycho, schedule):
