@@ -44,6 +44,8 @@ const FormModal = (props) => {
       })
         .then(async (res) => {
           let data = await res.json();
+
+          console.log(data)
           if(data["error"] !== "")
           {
             setErrorContent(data["error"])
@@ -51,7 +53,6 @@ const FormModal = (props) => {
           }
           else
           {
-            let data = await res.json();
             var headers = data["data"].slice(0, 1)[0]
             data = data["data"].slice(1, data["data"].length)
 
@@ -66,6 +67,7 @@ const FormModal = (props) => {
             }
             props.editdata(obj);
             props.editheaders(headers);
+            props.onHide()
           }
           })
           .catch((err) => {
