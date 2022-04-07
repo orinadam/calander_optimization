@@ -1,0 +1,14 @@
+<<<<<<< HEAD
+Flask==2.0.3
+Flask-Cors==3.0.10
+Flask-Session==0.4.0
+pandas==1.4.1
+flask-core==2.9.0
+=======
+Flask==2.0.3
+Flask-Cors==3.0.10
+Flask-Session==0.4.0
+pandas==1.4.1
+flask-core==2.9.0
+>>>>>>> 3e36c6bbd6b2a313785c28fe045a3bd1abe15dd7
+openpyxl==3.0.9
