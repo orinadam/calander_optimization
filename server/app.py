@@ -155,6 +155,7 @@ def upload_file():
     # use the algorithm to send the schedule
     #return schedule
     #["error - invalid id", "this is another check", "test"]
+    print(result[1])
     return {"data" : value, "error" : result[1]}
 
 

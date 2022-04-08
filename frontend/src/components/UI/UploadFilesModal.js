@@ -45,9 +45,10 @@ const FormModal = (props) => {
         .then(async (res) => {
           let data = await res.json();
 
-          console.log(data)
-          if(data["error"] === [])
+          console.log(data["error"].length)
+          if(data["error"].length !== 0)
           {
+            console.log("a")
             setErrorContent(data["error"])
             props.changerrror(true)
           }

@@ -281,10 +281,9 @@ function App() {
             הורדת טבלה
           </Button>{" "}
           <Button
-            onClick={() => {
-              setAddCandidateModal(true);
-            }}
-            variant="outline-success"
+            onClick={() => {setDeleteModal(true)}}
+        
+            variant="outline-danger"
           >
 
                         מחיקת טבלה
@@ -323,13 +322,13 @@ function App() {
 
 /*
 
-                        הוספת מועמד
-          </Button>{" "}
           <Button
-            onClick={() => {setDeleteModal(true)}}
-        
-            variant="outline-danger"
+            onClick={() => {
+              setAddCandidateModal(true);
+            }}
+            variant="outline-success"
           >
+                                    הוספת מועמד
 */
 
 export default App;
