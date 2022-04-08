@@ -78,7 +78,7 @@ def specific_candidate(first_name_candidate, family_name_candidate, schedule):
 
 
 def filter_by_day(schedule, day):
-    authority_list = [["שם פסיכולוג", "יום", "שעה", "שם מועמד", "קוד שגיאה"]]
+    authority_list = [["שם פסיכולוג", "שעת ראיון" ,"יום", "שם פרטי", "שם משפחה", "מ.א", "הערות","טלפון", "דפר", "שנות לימוד","סימול עברית", "מייל"  ,  "code"]]
     for meeting in schedule:  # every meeting is [name_psycho, day, time, name_candidate]
         if meeting[1] == day:
             authority_list.append(meeting)

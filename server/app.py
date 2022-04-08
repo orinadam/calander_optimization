@@ -75,6 +75,19 @@ def sned_authority():
     print(s)
     return {"data" : s, "error" : "", "isempty": isEmpty}
 
+@app.route('/days', methods=['POST', "GET"])
+def find_day():
+    day = request.args.get('day')
+    schedule = ms.make_schedule(db.get_candidates_list(0), db.get_psychologists_list(0))
+    value = list(ms.to_excel(schedule, 0))
+    del value[0]
+    print(value)
+    s = filter_by_day(value, day)
+    isEmpty = "true" if s == None else "false"
+    print(s)
+    return {"data" : s, "error" : "", "isempty": isEmpty}
+
+
 @app.route('/getstart', methods=['POST', "GET"])
 def send_start():
     w1 = datetime.datetime(year=2022, month=1, day=1)

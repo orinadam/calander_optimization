@@ -3,7 +3,7 @@ import LuzAuthPage from "../LuzAuth";
 import SearchAuthrity from "../SearchAutority";
 import FindReplacementPage from "../FindReplacement";
 import SpecificMeeting from "../SpecificMeetingPage";
-
+import DaysPage from "../DaysSort";
 const StaticData = [
   { day: "שני", hour: "11:00", psychologist: "פסיכולוג4" },
   { day: "ראשון", hour: "18:00", psychologist: "פסיכולוג1" },
@@ -58,6 +58,12 @@ const EditCandidate = (props) => {
             editheaders={props.editheaders}
           />
           <LuzAuthPage
+            data={props.data}
+            editdata={props.editdata}
+            headers={props.headers}
+            editheaders={props.editheaders}
+          />
+          <DaysPage
             data={props.data}
             editdata={props.editdata}
             headers={props.headers}
