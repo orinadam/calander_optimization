@@ -37,7 +37,7 @@ const handleDeleteCandidate = async (e, value) =>
   .then( async(res) => {
       var newData = await props.data.filter(item =>
         {
-          return item[props.headers[4]] !== value
+          return item["מ.א"] !== value
         })
 
         console.log(newData)
@@ -87,7 +87,13 @@ const headersShow = props.headers.filter((item) => {
     {
       color = "red"
     }
-    items.push(<button onClick={(e) => handleDeleteCandidate(e, item[props.headers[4]])}><FcFullTrash/></button>)
+
+    var index = props.headers.indexOf("מ.א")
+    console.log(index)
+    if(index !== -1)
+    {
+      items.push(<button onClick={(e) => handleDeleteCandidate(e, item[props.headers[index]])}><FcFullTrash/></button>)
+    }
     return (
       <tr
         bgcolor={color}

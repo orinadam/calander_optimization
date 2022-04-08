@@ -30,20 +30,13 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 def send_specific():
     firstname = request.args.get('firstname')
     secondname =  request.args.get('secondname')
-    res =  [["שם פסיכולוג", "שעת ראיון" , "שם פרטי", "שם משפחה", "מ.א", "הערות","טלפון", "דפר", "שנות לימוד","סימול עברית", "מייל"]]
-
-    print("#"*10)
-    print(firstname)
-    print(secondname)
-    print("#"*10)
+    res =  [["שם פסיכולוג", "שעת ראיון" ,"יום", "שם פרטי", "שם משפחה", "מ.א", "הערות","טלפון", "דפר", "שנות לימוד","סימול עברית", "מייל"  ,  "code"]]
     schedule = ms.make_schedule(db.get_candidates_list(0), db.get_psychologists_list(0))
     value = list(ms.to_excel(schedule, 0))
     del value[0]
     s = specific_candidate(firstname, secondname, value)
     isEmpty = "true" if s == None else "false"
     res.append(s)
-    print("#"*10)
-    
     return {"data" : res, "error" : "", "isempty": isEmpty}
 
 
@@ -63,12 +56,12 @@ def find_replacement():
 @app.route('/check', methods=['POST', "GET"])
 def send():
     search = request.args.get('data')
-    print(search)
-    value = list(loadFiles())
+    schedule = ms.make_schedule(db.get_candidates_list(0), db.get_psychologists_list(0))
+    value = list(ms.to_excel(schedule, 0))
     del value[0]
     s = same_psychologist(search, value)
-    print(s)
-    return {"data" : s, "error" : ""}
+    isEmpty = "true" if s == None else "false"
+    return {"data" : s, "error" : "", "isempty": isEmpty}
 
 @app.route('/luz', methods=['POST', "GET"])
 def sned_authority():
@@ -127,10 +120,12 @@ def upload_file():
                 filename = secure_filename(file.filename)
                 file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
     # connect to the database
+
     result = loadFiles()
+    print(result)
     value = result[0]
+    print(value)
     print("THIS IS THE REAL SCHDULE:")
-    value[0] = list(value[0])
 
 
         

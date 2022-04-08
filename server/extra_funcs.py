@@ -72,8 +72,8 @@ def specific_candidate(first_name_candidate, family_name_candidate, schedule):
     :return: הפגישה המתאימה
     """
     for meeting in schedule:
-        if meeting[2] == first_name_candidate:
-            if meeting[3] == family_name_candidate:
+        if meeting[3] == first_name_candidate:
+            if meeting[4] == family_name_candidate:
                 return meeting
 
 
