@@ -17,7 +17,7 @@ def loadFiles():
     errors += get_psychologists("psychologists.xlsx", 0)
     errors += get_working_time("working_hours.xlsx")
     errors += get_candidates_available_hours("candidates_available_hours.xlsx", 0)
-    if errors == []:
+    if errors != []:
         return [], errors
     schedule = ms.make_schedule(get_candidates_list(0), get_psychologists_list(0))
     return (ms.to_excel(schedule, 0), []) # 0 - today

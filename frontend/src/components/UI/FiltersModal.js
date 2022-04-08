@@ -63,12 +63,7 @@ const EditCandidate = (props) => {
             headers={props.headers}
             editheaders={props.editheaders}
           />
-          <FindReplacementPage
-            data={props.data}
-            editdata={props.editdata}
-            headers={props.headers}
-            editheaders={props.editheaders}
-          />
+
         </Modal.Body>
         <Modal.Footer>
           <Button onClick={props.onHide}>סגירה</Button>
@@ -78,4 +73,13 @@ const EditCandidate = (props) => {
   );
 };
 
+/*
+
+          <FindReplacementPage
+            data={props.data}
+            editdata={props.editdata}
+            headers={props.headers}
+            editheaders={props.editheaders}
+          />
+*/
 export default EditCandidate;

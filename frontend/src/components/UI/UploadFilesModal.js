@@ -46,7 +46,7 @@ const FormModal = (props) => {
           let data = await res.json();
 
           console.log(data)
-          if(data["error"] !== [])
+          if(data["error"] === [])
           {
             setErrorContent(data["error"])
             props.changerrror(true)
@@ -62,7 +62,7 @@ const FormModal = (props) => {
               for (var j = 0; j < data[i].length; j++) {
                 temp[headers[j]] = data[i][j];
               }
-              console.log(temp)
+              console.log("fvfvfvf")
               obj.push(temp);
             }
             props.editdata(obj);

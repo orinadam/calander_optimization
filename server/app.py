@@ -66,8 +66,10 @@ def send():
 @app.route('/luz', methods=['POST', "GET"])
 def sned_authority():
     authority = request.args.get('authority')
-    value = list(loadFiles())
+    schedule = ms.make_schedule(db.get_candidates_list(0), db.get_psychologists_list(0))
+    value = list(ms.to_excel(schedule, 0))
     del value[0]
+    print(value)
     s = luz_authority(value, authority)
     isEmpty = "true" if s == None else "false"
     print(s)
@@ -124,7 +126,6 @@ def upload_file():
     result = loadFiles()
     print(result)
     value = result[0]
-    print(value)
     print("THIS IS THE REAL SCHDULE:")
 
 

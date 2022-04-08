@@ -236,6 +236,7 @@ function App() {
             }}
           />
         )}
+        
         {addCandidateModal && (
           <AddCandidate
             data={data}
@@ -274,13 +275,7 @@ function App() {
             }}
             variant="outline-success"
           >
-                        הוספת מועמד
-          </Button>{" "}
-          <Button
-            onClick={() => {setDeleteModal(true)}}
-        
-            variant="outline-danger"
-          >
+
                         מחיקת טבלה
           </Button>{" "}
           <Button
@@ -301,6 +296,7 @@ function App() {
           </Button>{" "}
         </Card>
         <br />
+        {data.length !== 0 &&
           <ScheduleTable
             openCandidate={() => {
               setCandidateModal(true);
@@ -308,12 +304,21 @@ function App() {
             data={data}
             headers={headers}
             editdata={setData}
-          />
+          />}
       </CandidateData.Provider>
     </div>
   );
 }
 
+/*
 
+                        הוספת מועמד
+          </Button>{" "}
+          <Button
+            onClick={() => {setDeleteModal(true)}}
+        
+            variant="outline-danger"
+          >
+*/
 
 export default App;

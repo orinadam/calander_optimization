@@ -162,7 +162,7 @@ def to_excel(list_schedule, day_index):
     :param day_index: index of the day, 0=Tuesday.
     :return: None
     """
-    table_for_excel = [("פסיכולוג","יום", "שעת ראיון", "שם פרטי", "שם משפחה", "מ.א", "הערות", "טלפון", "דפר", "שנו\"ל", "עברית", "מייל", "code")]
+    table_for_excel = [["פסיכולוג","יום", "שעת ראיון", "שם פרטי", "שם משפחה", "מ.א", "הערות", "טלפון", "דפר", "שנו\"ל", "עברית", "מייל", "code"]]
     new_list_schedule = []
 
     for meeting in list_schedule:

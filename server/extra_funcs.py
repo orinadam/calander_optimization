@@ -9,10 +9,10 @@ def luz_authority(schedule, authority):
     :return: רשימה של פגישות של אותה סמכות
     """
     # authority_list = [["סמכות"], ["שם פסיכולוג", "יום", "שעה", "שם מועמד"], []]
-    authority_list = [["שם פסיכולוג", "יום", "שעה", "שם מועמד", "קוד שגיאה"]]
+    authority_list = [["שם פסיכולוג", "יום", "שעה", "שם מועמד", "code"]]
 
     for meeting in schedule:  # every meeting is [name_psycho, day, time, name_candidate, error code]
-        if meeting[5] == authority:
+        if meeting[6] == authority:
             # meeting[2] = ms.time_float_to_string(meeting)
             authority_list.append(meeting)
 

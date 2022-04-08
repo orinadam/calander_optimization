@@ -81,13 +81,15 @@ const headersShow = props.headers.filter((item) => {
       }
     }
     let color = ""
-    if(item["code"] === 1){
-        color = "orange"
-    }else if(item["code"] === 2)
+    if(props.headers.includes("code"))
     {
-      color = "red"
+      if(item["code"] === 1){
+          color = "orange"
+      }else if(item["code"] === 2)
+      {
+        color = "red"
+      }
     }
-
     var index = props.headers.indexOf("מ.א")
     console.log(index)
     if(index !== -1)
