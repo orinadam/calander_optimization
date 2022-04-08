@@ -157,17 +157,28 @@ function App() {
       });
   };
   const exportToExcel = () => {
-    console.log();
-    var json = [];
-    for (var item in data) {
-      var itemJson = {};
-      for (var field = Object.keys(data[0]).length - 1; field >= 0; field--) {
-        itemJson[Object.keys(data[0])[field]] =
-          data[item][Object.keys(data[0])[field]];
+    var json = []
+    var headersItem = []
+    for(var i = 0; i < headers.length; i++)
+    {
+      if(headers[i] !== "code"){
+        headersItem.push(headers[i])
       }
-      console.log(itemJson);
-      json.push(itemJson);
     }
+    json.push(headersItem)
+    for(var item of data)
+    {
+      console.log(item)
+      let single = []
+      for(var i = 0; i < headers.length; i++)
+      {
+        if(headers[i] !== "code"){
+          single.push(item[headers[i]])
+        }
+      }
+      json.push(single)
+    }
+    console.log(json)
     const workSheet = XLSX.utils.json_to_sheet(json);
     const workBook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workBook, workSheet, "מערכת שבועית");
